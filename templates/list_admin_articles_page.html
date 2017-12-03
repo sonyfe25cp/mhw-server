@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="urls">
+    <a href="/">首页</a>
+    <a href="/admin/articles?source_type=news">文章列表</a>
+    <a href="/admin/insert_article">插入新闻</a>
+
+    <a href="/admin/articles?source_type=indexSlides">首页动图列表</a>
+    <a href="/admin/articles?source_type=referSlides">资料动图列表</a>
+</div>
+
+<div class="list">
+{{range .articles}}
+    <div class="item">
+        <span>{{.Title}}</span>
+        <span>{{.Content}}</span>
+        <span>{{.Source}}</span>
+        <span>{{.SourceType}}</span>
+        <span>{{.Image}}</span>
+    </div>
+{{end}}
+</div>
+
+</body>
+</html>

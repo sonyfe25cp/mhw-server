@@ -13,8 +13,17 @@ const (
 	IndexSlideList = "/index_slides"
 	ReferSlideList = "/refer_slides"
 
+	Article = "/article"
+
 	AdminArticleList   = "/admin/articles"
 	AdminArticleInsert = "/admin/insert_article"
+)
+
+const (
+
+	News_SourceType         = "news"
+	IndexSlides_SourceType  = "indexSlides"
+	RerferSlides_SourceType = "referSlides"
 )
 
 func main() {

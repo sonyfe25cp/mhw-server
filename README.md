@@ -26,7 +26,7 @@ create table articles(
   `image` varchar(256)
 );
 
-alter table articles add index type(type);
+alter table articles add index source_type(source_type);
 
 insert into articles(`gmt_create`, `gmt_modified`, `title`, `content`, `source`, `source_type`)
 values(now(), now(), '索尼推《怪物猎人世界》限定版联动周边 又来骗钱？',

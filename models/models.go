@@ -39,6 +39,7 @@ func ListArticles(dbUrl string, sourceType string, offset int, limit int) []Arti
 	sqlContent := `select id, title, content, source, source_type, image, gmt_create, gmt_modified
 				  from articles
 				  where source_type = ?
+				  order by id desc
 				  limit ?, ?`
 
 	var articles []Article
@@ -79,6 +80,51 @@ func ListArticles(dbUrl string, sourceType string, offset int, limit int) []Arti
 		}
 	}
 	return articles
+}
+
+func GetArticle(dbUrl string, sourceType string, id int) Article {
+	sqlContent := `select id, title, content, source, source_type, image, gmt_create, gmt_modified
+				  from articles
+				  where id = ? and source_type = ?`
+
+	var article Article
+	db, err := sql.Open("mysql", dbUrl);
+	defer func() {
+		if db != nil {
+			db.Close()
+		}
+		if recover() != nil {
+			log.Println("list statistics error")
+		}
+	}()
+	if err != nil {
+		log.Println("error, can not open db:", err)
+	} else {
+		if err = db.Ping(); err == nil {
+			if rows, err := db.Query(sqlContent, sourceType, id); err == nil {
+				for rows.Next() {
+					var id int64
+					var title string
+					var content string
+					var source string
+					var sourceType string
+					var image string
+					var gmtCreate int64
+					var gmtModified int64
+
+					err = rows.Scan(&id, &title, &content, &source, &sourceType, &image, &gmtCreate, &gmtModified)
+					article = Article{ID: id, Title: title, Content: content, Source: source, SourceType: sourceType,
+						Image: image, CreateTime: gmtCreate, ModifiedTime: gmtModified}
+
+				}
+			} else {
+				log.Println("error, can not insert reqlog:", err)
+			}
+		} else {
+			log.Println("error, can not ping:", err)
+		}
+	}
+	return article
 }
 
 func InsertArticles(dbUrl string, article Article) bool {

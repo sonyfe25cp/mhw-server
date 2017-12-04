@@ -15,11 +15,26 @@ type Server struct {
 
 const DB_URL = "mhw_admin:mhw_admin_1803@tcp(127.0.0.1:3306)/mhw"
 
-const (
-	News_SourceType         = "news"
-	IndexSlides_SourceType  = "indexSlides"
-	RerferSlides_SourceType = "referSlides"
-)
+func Route(path string) string {
+	var sourceType string
+	switch path {
+	case ArticleList:
+		sourceType = News_SourceType
+		break
+	case Article:
+		sourceType = News_SourceType
+		break
+	case IndexSlideList:
+		sourceType = IndexSlides_SourceType
+		break
+	case ReferSlideList:
+		sourceType = RerferSlides_SourceType
+		break
+	default:
+		break
+	}
+	return sourceType
+}
 
 func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
@@ -27,7 +42,14 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, nil)
 	}
 }
-
+func (s *Server) getArticle(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		id := utils.StringtoIntWithDefault(r.FormValue("id"), 0)
+		sourceType := Route(r.URL.Path)
+		article := models.GetArticle(DB_URL, sourceType, id)
+		utils.WriteJson(w, article)
+	}
+}
 func (s *Server) listArticles(w http.ResponseWriter, r *http.Request) {
 	utils.DebugFormValues(r.Form)
 	logs.Info(r.URL.Path)
@@ -36,25 +58,8 @@ func (s *Server) listArticles(w http.ResponseWriter, r *http.Request) {
 		offset := utils.StringtoIntWithDefault(r.FormValue("offset"), 0)
 		limit := utils.StringtoIntWithDefault(r.FormValue("limit"), 10)
 
-		var sourceType string
-		path := r.URL.Path
-		if path == ArticleList {
-			sourceType = News_SourceType
-		}
+		sourceType := Route(r.URL.Path)
 
-		switch path {
-		case ArticleList:
-			sourceType = News_SourceType
-			break
-		case IndexSlideList:
-			sourceType = IndexSlides_SourceType
-			break
-		case ReferSlideList:
-			sourceType = RerferSlides_SourceType
-			break
-		default:
-			break
-		}
 		if len(sourceType) != 0 {
 			articles := models.ListArticles(DB_URL, sourceType, offset, limit)
 			utils.WriteJson(w, articles)

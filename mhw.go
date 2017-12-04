@@ -39,6 +39,7 @@ func main() {
 	server := &Server{Start: time.Now()}
 
 	http.HandleFunc("/", server.index)                   //设置访问的路由
+	http.HandleFunc(Article, server.getArticle)    //设置访问的路由
 	http.HandleFunc(ArticleList, server.listArticles)    //设置访问的路由
 	http.HandleFunc(IndexSlideList, server.listArticles) //设置访问的路由
 	http.HandleFunc(ReferSlideList, server.listArticles) //设置访问的路由

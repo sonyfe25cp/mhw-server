@@ -29,7 +29,7 @@ const (
 func main() {
 	var keyPath, addr string
 	var test bool
-	flag.StringVar(&addr, "addr", "0.0.0.0:8080", "Config file path")
+	flag.StringVar(&addr, "addr", "0.0.0.0:9090", "Config file path")
 	flag.StringVar(&keyPath, "keyPath", "/Users/aiao/golang/ownpkg/src/com.github.sonyfe25cp.mhw-server/sample/", "Server Key Path")
 	flag.BoolVar(&test, "test", false, "Test config file and exits")
 	flag.Parse()

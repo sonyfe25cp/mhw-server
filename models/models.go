@@ -82,10 +82,10 @@ func ListArticles(dbUrl string, sourceType string, offset int, limit int) []Arti
 	return articles
 }
 
-func GetArticle(dbUrl string, sourceType string, id int) Article {
+func GetArticle(dbUrl string, id int) Article {
 	sqlContent := `select id, title, content, source, source_type, image, gmt_create, gmt_modified
 				  from articles
-				  where id = ? and source_type = ?`
+				  where id = ?`
 
 	var article Article
 	db, err := sql.Open("mysql", dbUrl);
@@ -101,7 +101,7 @@ func GetArticle(dbUrl string, sourceType string, id int) Article {
 		log.Println("error, can not open db:", err)
 	} else {
 		if err = db.Ping(); err == nil {
-			if rows, err := db.Query(sqlContent, sourceType, id); err == nil {
+			if rows, err := db.Query(sqlContent, id); err == nil {
 				for rows.Next() {
 					var id int64
 					var title string
@@ -115,7 +115,6 @@ func GetArticle(dbUrl string, sourceType string, id int) Article {
 					err = rows.Scan(&id, &title, &content, &source, &sourceType, &image, &gmtCreate, &gmtModified)
 					article = Article{ID: id, Title: title, Content: content, Source: source, SourceType: sourceType,
 						Image: image, CreateTime: gmtCreate, ModifiedTime: gmtModified}
-
 				}
 			} else {
 				log.Println("error, can not insert reqlog:", err)

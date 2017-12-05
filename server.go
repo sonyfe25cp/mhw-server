@@ -46,7 +46,8 @@ func (s *Server) getArticle(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		id := utils.StringtoIntWithDefault(r.FormValue("id"), 0)
 		sourceType := Route(r.URL.Path)
-		article := models.GetArticle(DB_URL, sourceType, id)
+		logs.Info("id:", id, "type:", sourceType)
+		article := models.GetArticle(DB_URL, id)
 		utils.WriteJson(w, article)
 	}
 }

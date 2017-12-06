@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.quilljs.com/1.3.4/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/1.3.4/quill.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>tinymce.init({selector: 'textarea'});</script>
 </head>
 <body>
 
@@ -21,33 +24,56 @@
 
 <div class="blocks">
 
-    <form action="/admin/insert_article" method="POST">
-        标题：<input name="title">
-        内容：<input name="content">
-        来源：<input name="source">
-        来源类型：<select name="source_type">
-        <option value="news">新闻</option>
-        <option value="indexSlides">首页动图</option>
-        <option value="referSlides">资料动图</option>
-    </select>
-        图片：<input name="image">
+{{/*<form action="/admin/insert_article" method="POST">*/}}
+    标题：<input name="title" class="title">
+{{/*内容：<input name="content" class="content">*/}}
+    来源：<input name="source" class="source">
+    来源类型：<select name="source_type" class="source_type">
+    <option value="news">新闻</option>
+    <option value="indexSlides">首页动图</option>
+    <option value="referSlides">资料动图</option>
+</select>
+    图片：<input name="image" class="image">
 
-        <input type="submit">
-    </form>
+{{/*<input type="submit">*/}}
+{{/*</form>*/}}
+
+    <button id="test">提交</button>
 
 </div>
 
-<!-- Create the editor container -->
-<div id="editor">
-</div>
-
-<!-- Include the Quill library -->
+<textarea id="abc">填写正文，可以直接粘贴~</textarea>
 
 
-<!-- Initialize Quill editor -->
 <script>
-    var quill = new Quill('#editor', {
-        theme: 'snow'
+    $(document).ready(function () {
+        $('#test').click(function () {
+            var content = tinymce.get('abc').getContent();
+            console.log('tmp:', content);
+
+            var title = $('.title').val();
+            // var content = $('.content').val();
+            var source = $('.source').val();
+            var source_type = $('.source_type').val();
+            var image = $('.image').val();
+
+
+            console.log('title', title);
+            console.log('title', content);
+            console.log('title', source);
+            console.log('title', source_type);
+            console.log('title', image);
+
+            $.post("/admin/insert_article", {
+                title: title,
+                source: source,
+                source_type: source_type,
+                image: image,
+                content: content,
+            }, function (result) {
+                $(location).attr('href', '/admin/articles');
+            });
+        });
     });
 </script>
 

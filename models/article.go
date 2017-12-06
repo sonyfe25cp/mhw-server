@@ -25,16 +25,6 @@ func (a *Article) toString() string {
 	return "CreateTime" + utils.Int64ToString(a.CreateTime)
 }
 
-type WeixinUser struct {
-	ID int64
-
-	Tokens  string
-	HeadImg string
-	Name    string
-	Gender  int32
-	VipDate int64
-}
-
 func ListArticles(dbUrl string, sourceType string, offset int, limit int) []Article {
 	sqlContent := `select id, title, content, source, source_type, image, gmt_create, gmt_modified
 				  from articles

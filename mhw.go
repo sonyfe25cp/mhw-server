@@ -12,19 +12,76 @@ const (
 	ArticleList    = "/articles"
 	IndexSlideList = "/index_slides"
 	ReferSlideList = "/refer_slides"
+	TaskList       = "/tasks"
+	EquipList      = "/equips"
+	ReferenceList  = "/references"
 
-	Article = "/article"
+	Article   = "/article"
+	Task      = "/task"
+	Equip     = "/equip"
+	Reference = "/reference"
 
 	AdminArticleList   = "/admin/articles"
 	AdminArticleInsert = "/admin/insert_article"
+
+	AdminTaskList   = "/admin/tasks"
+	AdminTaskInsert = "/admin/insert_task"
+
+	AdminEqupiList   = "/admin/equips"
+	AdminEquipInsert = "/admin/insert_equip"
 )
 
 const (
-
-	News_SourceType         = "news"
-	IndexSlides_SourceType  = "indexSlides"
-	RerferSlides_SourceType = "referSlides"
+	News_SourceType        = "news"
+	Task_SourceType        = "task"
+	Equip_SourceType       = "equip"
+	IndexSlides_SourceType = "indexSlides"
+	ReferSlides_SourceType = "referSlides"
+	Reference_SourceType   = "reference"
 )
+
+func Route(path string) string {
+	var sourceType string
+	switch path {
+	case ArticleList:
+		sourceType = News_SourceType
+		break
+	case Article:
+		sourceType = News_SourceType
+		break
+	case IndexSlideList:
+		sourceType = IndexSlides_SourceType
+		break
+	case ReferSlideList:
+		sourceType = ReferSlides_SourceType
+		break
+
+	case Task:
+		sourceType = Task_SourceType
+		break
+	case TaskList:
+		sourceType = Task_SourceType
+		break
+
+	case Equip:
+		sourceType = Equip_SourceType
+		break
+	case EquipList:
+		sourceType = Equip_SourceType
+		break
+
+	case Reference:
+		sourceType = Reference_SourceType
+		break
+	case ReferenceList:
+		sourceType = Reference_SourceType
+		break
+
+	default:
+		break
+	}
+	return sourceType
+}
 
 func main() {
 	var keyPath, addr string
@@ -38,9 +95,10 @@ func main() {
 
 	server := &Server{Start: time.Now()}
 
-	http.HandleFunc("/", server.index)                   //设置访问的路由
-	http.HandleFunc(Article, server.getArticle)    //设置访问的路由
-	http.HandleFunc(ArticleList, server.listArticles)    //设置访问的路由
+	http.HandleFunc("/", server.index)                //设置访问的路由
+	http.HandleFunc(Article, server.getArticle)       //设置访问的路由
+	http.HandleFunc(ArticleList, server.listArticles) //设置访问的路由
+
 	http.HandleFunc(IndexSlideList, server.listArticles) //设置访问的路由
 	http.HandleFunc(ReferSlideList, server.listArticles) //设置访问的路由
 

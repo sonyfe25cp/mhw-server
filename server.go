@@ -15,27 +15,6 @@ type Server struct {
 
 const DB_URL = "mhw_admin:mhw_admin_1803@tcp(127.0.0.1:3306)/mhw"
 
-func Route(path string) string {
-	var sourceType string
-	switch path {
-	case ArticleList:
-		sourceType = News_SourceType
-		break
-	case Article:
-		sourceType = News_SourceType
-		break
-	case IndexSlideList:
-		sourceType = IndexSlides_SourceType
-		break
-	case ReferSlideList:
-		sourceType = RerferSlides_SourceType
-		break
-	default:
-		break
-	}
-	return sourceType
-}
-
 func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		t, _ := template.ParseFiles("templates/index.html")
@@ -72,7 +51,6 @@ func (s *Server) listArticles(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) adminListArticles(w http.ResponseWriter, r *http.Request) {
 	utils.DebugFormValues(r.Form)
-	logs.Info("st:", r.FormValue("source_type"))
 	if r.Method == "GET" {
 
 		offset := utils.StringtoIntWithDefault(r.FormValue("offset"), 0)

@@ -1,5 +1,15 @@
 #MHW-Server
 
+###0.0.2
+Functions:
+    1. log user information
+    2. add local storage about click times
+
+###0.0.1
+Functions:
+    1. news list and details
+    2. slide image click and edit
+
 
 
 #sql
